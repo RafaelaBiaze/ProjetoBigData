@@ -8,6 +8,7 @@ x-spark-base: &spark-base
     - PYSPARK_PYTHON=python3
     - PYSPARK_DRIVER_PYTHON=python3
     - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    - SPARK_JARS_PACKAGES=org.postgresql:postgresql:42.6.0
   volumes:
     - ./hadoop/conf:/etc/hadoop
   networks:
@@ -108,6 +109,8 @@ services:
   postgres:
     image: postgres:14
     container_name: superset-db
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=superset
       - POSTGRES_PASSWORD=superset
