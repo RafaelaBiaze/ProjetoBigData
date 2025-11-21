@@ -1,0 +1,28 @@
+# --- DADOS PESADOS ---
+# O container deve ler dados via VOLUME, nunca "assar" eles na imagem
+data/
+notebooks/datasets/
+
+# --- GIT & CONFIGURAÇÕES ---
+# O container não precisa do histórico do Git ou do Compose
+.git/
+.gitignore
+.dockerignore
+docker-compose.yml
+LICENSE
+README.md
+
+# --- SUPERSET ---
+# Não queremos copiar o banco de dados local para dentro da imagem nova
+superset_home/
+
+# --- PYTHON & JUPYTER LIXO ---
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+*.pyo
+
+# --- SPARK LIXO ---
+spark-warehouse/
+metastore_db/
+derby.log

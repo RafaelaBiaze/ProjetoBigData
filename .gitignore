@@ -1,0 +1,35 @@
+# --- DADOS (Big Data) ---
+# Ignora pastas que contêm os dados brutos ou processados
+data/
+notebooks/datasets/
+
+# --- SUPERSET (Banco de Dados Local) ---
+# Ignora o banco SQLite local do Superset (contém senhas/configs locais)
+superset_home/*.db
+superset_home/*.db-journal
+
+# --- JUPYTER & PYTHON ---
+# Checkpoints automáticos do Jupyter (lixo)
+.ipynb_checkpoints/
+# Arquivos compilados do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- SPARK & HADOOP (Logs locais) ---
+# Pastas que o Spark cria automaticamente ao rodar
+spark-warehouse/
+metastore_db/
+derby.log
+
+# --- IDE & SISTEMA ---
+# Configurações do VS Code ou Mac/Windows
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- AMBIENTE VIRTUAL ---
+venv/
+.venv/
+env/
