@@ -5,8 +5,8 @@ notebooks/datasets/
 
 # --- SUPERSET (Banco de Dados Local) ---
 # Ignora o banco SQLite local do Superset (contém senhas/configs locais)
-superset_home/*.db
-superset_home/*.db-journal
+# superset_home/*.db
+# superset_home/*.db-journal
 
 # --- JUPYTER & PYTHON ---
 # Checkpoints automáticos do Jupyter (lixo)
