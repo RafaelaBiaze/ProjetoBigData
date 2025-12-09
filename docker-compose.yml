@@ -8,6 +8,7 @@ x-spark-base: &spark-base
     - PYSPARK_PYTHON=python3
     - PYSPARK_DRIVER_PYTHON=python3
     - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    - SPARK_JARS_PACKAGES=org.postgresql:postgresql:42.6.0
   volumes:
     - ./hadoop/conf:/etc/hadoop
   networks:
@@ -24,6 +25,7 @@ services:
     environment:
       - CLUSTER_NAME=hadoop-cluster
       - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - HDFS_CONF_dfs_permissions_enabled=false
     ports:
       - "9870:9870"
       - "9000:9000"
@@ -90,24 +92,11 @@ services:
     networks:
       - data-network
 
-  # Trino (Presto successor)
-  trino:
-    image: trinodb/trino:latest
-    container_name: trino
-    ports:
-      - "8082:8080"
-    volumes:
-      - ./trino/catalog:/etc/trino/catalog
-      - ./hadoop/conf:/etc/hadoop
-    networks:
-      - data-network
-    depends_on:
-      - namenode
-      - spark-master
-
   postgres:
     image: postgres:14
     container_name: superset-db
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=superset
       - POSTGRES_PASSWORD=superset
@@ -121,30 +110,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  # Apache Superset
-  superset:
-    image: apache/superset:latest
-    container_name: superset
-    environment:
-      - SUPERSET_LOAD_EXAMPLES=yes
-      - SUPERSET_SECRET_KEY=supersecret
-      - SUPERSET_DATABASE_URI=postgresql+psycopg2://superset:superset@superset-db:5432/superset
-    depends_on:
-      - trino
-      - postgres
-    ports:
-      - "8088:8088"
-    volumes:
-      - ./superset_home:/app/superset_home
-    command: >
-      /bin/sh -c "
-      superset db upgrade &&
-      superset fab create-admin --username admin --firstname Admin --lastname User --email admin@example.com --password SenhaForte!123 &&
-      superset init &&
-      superset run -h 0.0.0.0 -p 8088"
-    networks:
-      - data-network
 
   # Jupyter com PySpark + Iceberg + Postgres JDBC
   jupyter:
